@@ -1,0 +1,105 @@
+name: CI/CD using Docker & Github Actions
+
+# 1. main 브랜치에 push 또는 PR 작업이 이루어질 경우 액션 실행
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 2. 자바 설정
+jobs:
+  CI-CD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      # MySQL DB 설정파일 application-prod.yml 작성
+      - name: Create application-prod.yml
+        run: |
+          mkdir -p ./src/main/resources
+          cat <<EOF > ./src/main/resources/application.yml
+          spring:
+            datasource:
+              url: ${DB_URL}
+              username: ${DB_USERNAME}
+              password: ${DB_PASSWORD}
+              driver-class-name: com.mysql.cj.jdbc.Driver
+            jpa:
+              hibernate:
+                ddl-auto: update
+              show-sql: true
+              properties:
+                hibernate:
+                  dialect: org.hibernate.dialect.MySQL5Dialect
+          logging:
+            pattern:
+              console: "%white([%d{yyyy-MM-dd HH:mm:ss}]) %yellow([%thread]) %highlight([%-5level]) %white([%-35logger{35}]) %white(%msg  %n)"
+            level:
+              org:
+                springframework:
+                  security: DEBUG
+          EOF
+        env:
+          MYSQL_URL: ${{ secrets.MYSQL_URL }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        # env:
+        #   MYSQL_URL: ${{ secrets.MYSQL_URL }}
+        #   MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+        #   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        # run: |
+        #   cd ./src/main/resources
+        #   touch ./application-prod.yml
+        #   echo "${{ secrets.YML }}" > ./application-prod.yml
+        # shell: bash
+
+      
+      # 3. gradle build로 빌드파일 생성
+      - name: Build with Gradlee
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: 도커 빌더 생성 및 부팅
+        uses: docker/setup-buildx-action@v2
+
+      - name: 도커 허브에 로그인
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: 도커 빌드
+        run : |
+          # Docker 이미지 빌드
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }} .
+          # Docker 컨테이너 실행
+          docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }}
+
+      # 4. docker 작업 수행
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Run Docker Compose
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker-compose up --build
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_IMAGENAME: ${{ secrets.DOCKER_IMAGENAME }}
+          MYSQL_URL: ${{ secrets.MYSQL_URL }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
