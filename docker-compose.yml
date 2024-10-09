@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: spring-boot-container
+    build:
+      context: .
+      dockerfile: dockerfile-java
+    volumes:
+      - ./build/libs:/app/libs
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_URL}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+  db:
+    container_name: mysql-container
+    build:
+      context: .
+      dockerfile: dockerfile-mysql
+    environment:
+      MYSQL_URL: ${MYSQL_URL}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}

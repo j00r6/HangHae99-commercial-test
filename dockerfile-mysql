@@ -1,0 +1,23 @@
+FROM ubuntu:latest
+LABEL authors="pjs"
+
+ENTRYPOINT ["top", "-b"]
+
+# MySQL의 공식 이미지를 사용합니다.
+FROM mysql:latest
+
+# MySQL의 환경 변수를 설정합니다.
+# 초기 데이터베이스 이름
+ENV MYSQL_DBNAME=${DB_NAME}
+# DB 사용자 이름
+ENV MYSQL_USERNAME=${DB_USERNAME}
+# DB 비밀번호
+ENV MYSQL_PASSWORD=${DB_PASSWORD}
+
+# MySQL 데이터 디렉토리 설정
+VOLUME /var/lib/mysql
+
+EXPOSE 3306
+
+# 컨테이너가 시작되면 MySQL이 자동으로 실행됩니다.
+CMD ["mysqld"]

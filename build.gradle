@@ -12,6 +12,9 @@ java {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
+bootJar{
+	archiveFileName = 'hanghae99-commercial-test.jar'
+}
 
 configurations {
 	compileOnly {
