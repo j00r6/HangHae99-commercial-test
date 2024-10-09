@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.corporate_quest.Hanghae99CommercialTestApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-10-09T03:52:24" hostname="bagjinsuui-MacBookPro.local" time="0.427">
+<testsuite name="com.corporate_quest.Hanghae99CommercialTestApplicationTests" tests="1" skipped="0" failures="1" errors="0" timestamp="2024-10-09T07:38:57" hostname="bagjinsuui-MacBookPro.local" time="0.0">
   <properties/>
-  <testcase name="contextLoads()" classname="com.corporate_quest.Hanghae99CommercialTestApplicationTests" time="0.427"/>
-  <system-out><![CDATA[12:52:23.943 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.corporate_quest.Hanghae99CommercialTestApplicationTests]: Hanghae99CommercialTestApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-12:52:23.992 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.corporate_quest.Hanghae99CommercialTestApplication for test class com.corporate_quest.Hanghae99CommercialTestApplicationTests
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::                (v3.3.4)
-
-2024-10-09T12:52:24.182+09:00  INFO 13100 --- [hanghae99-commercial-test] [    Test worker] .Hanghae99CommercialTestApplicationTests : Starting Hanghae99CommercialTestApplicationTests using Java 17.0.8 with PID 13100 (started by pjs in /Users/pjs/Desktop/BE45/HangHae99-commercial-test)
-2024-10-09T12:52:24.184+09:00  INFO 13100 --- [hanghae99-commercial-test] [    Test worker] .Hanghae99CommercialTestApplicationTests : No active profile set, falling back to 1 default profile: "default"
-2024-10-09T12:52:24.743+09:00  INFO 13100 --- [hanghae99-commercial-test] [    Test worker] .Hanghae99CommercialTestApplicationTests : Started Hanghae99CommercialTestApplicationTests in 0.685 seconds (process running for 1.238)
+  <testcase name="initializationError" classname="com.corporate_quest.Hanghae99CommercialTestApplicationTests" time="0.0">
+    <failure message="java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test" type="java.lang.IllegalStateException">java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
+	at org.springframework.util.Assert.state(Assert.java:76)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.findConfigurationClass(SpringBootTestContextBootstrapper.java:246)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.getOrFindConfigurationClasses(SpringBootTestContextBootstrapper.java:233)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.processMergedContextConfiguration(SpringBootTestContextBootstrapper.java:150)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:351)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:267)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:215)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:108)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:111)
+	at org.springframework.test.context.TestContextManager.&lt;init&gt;(TestContextManager.java:142)
+	at org.springframework.test.context.TestContextManager.&lt;init&gt;(TestContextManager.java:126)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.getTestContextManager(SpringExtension.java:366)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.beforeAll(SpringExtension.java:131)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <system-out><![CDATA[16:38:57.395 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.corporate_quest.Hanghae99CommercialTestApplicationTests]: Hanghae99CommercialTestApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
