@@ -63,7 +63,7 @@ jobs:
 
       
       # 3. gradle build로 빌드파일 생성
-      - name: Build with Gradle
+      - name: Build with Gradlee
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
