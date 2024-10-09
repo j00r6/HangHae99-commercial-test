@@ -3,7 +3,7 @@ name: CI/CD using Docker & Github Actions
 # 1. main 브랜치에 push 또는 PR 작업이 이루어질 경우 액션 실행
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
