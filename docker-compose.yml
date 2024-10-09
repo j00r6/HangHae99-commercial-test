@@ -5,7 +5,7 @@ services:
     container_name: spring-boot-container
     build:
       context: .
-      dockerfile: dockerfile-java
+      dockerfile: dockerfile
     volumes:
       - ./build/libs:/app/libs
     environment:
