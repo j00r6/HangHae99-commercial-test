@@ -81,9 +81,9 @@ jobs:
       - name: 도커 빌드
         run : |
           # Docker 이미지 빌드
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }}:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }} .
           # Docker 컨테이너 실행
-          docker run -d --name my-spring-app-container -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }}:latest
+          docker run -d --name my-spring-app-container -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGENAME }}
 
       # 4. docker 작업 수행
       - name: Install Docker Compose
