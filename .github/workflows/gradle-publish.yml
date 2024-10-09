@@ -81,9 +81,10 @@ jobs:
       - name: Docker Build
         run: |
           # Docker 이미지 빌드
-          docker build -t ${{ secrets.DOCKER_IMAGENAME }} .
+          docker build -t ${{ secrets.DOCKER_IMAGENAME }}:latest .
           # Docker 컨테이너 실행
-          docker run -d -p 8080:8080 ${{ secrets.DOCKER_IMAGENAME }}
+          docker run -d -p 8080:8080 ${{ secrets.DOCKER_IMAGENAME }}:latest
+          docker push ${{ secrets.DOCKER_IMAGENAME }}:latest
 
       - name: Install Docker Compose
         run: |
