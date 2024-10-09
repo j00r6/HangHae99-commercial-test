@@ -9,5 +9,4 @@ class Hanghae99CommercialTestApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
