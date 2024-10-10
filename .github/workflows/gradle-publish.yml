@@ -87,8 +87,8 @@ jobs:
           # Docker 컨테이너 실행
           docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
           # Docker Hub 에 push
-          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}-app
-          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}-db
+          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
 
           
         env:
