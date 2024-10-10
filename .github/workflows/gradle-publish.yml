@@ -21,47 +21,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       
-      # MySQL DB 설정파일 application-prod.yml 작성
-      - name: Create application-prod.yml
-        run: |
-          mkdir -p ./src/main/resources
-          cat <<EOF > ./src/main/resources/application.yml
-          spring:
-            datasource:
-              url: ${DB_URL}
-              username: ${DB_USERNAME}
-              password: ${DB_PASSWORD}
-              driver-class-name: com.mysql.cj.jdbc.Driver
-            jpa:
-              hibernate:
-                ddl-auto: update
-              show-sql: true
-              properties:
-                hibernate:
-                  dialect: org.hibernate.dialect.MySQL5Dialect
-          logging:
-            pattern:
-              console: "%white([%d{yyyy-MM-dd HH:mm:ss}]) %yellow([%thread]) %highlight([%-5level]) %white([%-35logger{35}]) %white(%msg  %n)"
-            level:
-              org:
-                springframework:
-                  security: DEBUG
-          EOF
-        env:
-          MYSQL_URL: ${{ secrets.MYSQL_URL }}
-          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        # env:
-        #   MYSQL_URL: ${{ secrets.MYSQL_URL }}
-        #   MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-        #   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        # run: |
-        #   cd ./src/main/resources
-        #   touch ./application-prod.yml
-        #   echo "${{ secrets.YML }}" > ./application-prod.yml
-        # shell: bash
-
-      
       # 3. gradle build로 빌드파일 생성
       - name: Build with Gradlee
         run: chmod +x ./gradlew
@@ -84,8 +43,17 @@ jobs:
           # Docker 이미지 빌드
           docker build -f dockerfile -t ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }} .
           docker build -f dockerfile-mysql -t ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }} .
-          # Docker 컨테이너 실행
-          docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
+          
+      - name: Purge old Docker image
+        uses: deliverybot/docker-hub-purge-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/hanghae99
+          tag: ${{ secrets.DOCKER_IMAGENAME }}
+
+      - name: Docker Hub Push
+        run: |
           # Docker Hub 에 push
           docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
 
