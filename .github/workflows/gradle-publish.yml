@@ -80,11 +80,12 @@ jobs:
           
       - name: Docker Build
         run: |
+          #<USER_ID>/<REPO>:<TAG>
           # Docker 이미지 빌드
-          docker build -t ${{ secrets.DOCKER_IMAGENAME }}:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }} .
           # Docker 컨테이너 실행
-          docker run -d -p 8080:8080 ${{ secrets.DOCKER_IMAGENAME }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:latest
+          docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
           
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
