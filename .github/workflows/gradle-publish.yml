@@ -3,9 +3,9 @@ name: CI/CD using Docker & Github Actions.
 # 1. main 브랜치에 push 또는 PR 작업이 이루어질 경우 액션 실행
 on:
   push:
-    branches: [ "main" ]
+    # branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    # branches: [ "main" ]
 
 # 2. 자바 설정
 jobs:
@@ -87,7 +87,6 @@ jobs:
           # Docker 컨테이너 실행
           docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
           # Docker Hub 에 push
-          docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
           docker push ${{ secrets.DOCKER_USERNAME }}/hanghae99:${{ secrets.DOCKER_IMAGENAME }}
 
           
